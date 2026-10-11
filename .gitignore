@@ -1,0 +1,23 @@
+# Compiled class files & build artifacts
+**/target/
+**/*.class
+**/*.jar
+**/*.war
+
+# Node dependencies & builds
+**/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Environment variables & local secrets
+.env
+.env.local
+*.log
+
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: carconnect-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: carconnect
+      MYSQL_ROOT_PASSWORD: Sagar
+    ports:
+      - "3306:3306"
+    volumes:
+      - carconnect_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carconnect-app
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/carconnect?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Sagar
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: carconnectsupersecretkey2025securetokengenerator123456789
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  carconnect_db_data:
